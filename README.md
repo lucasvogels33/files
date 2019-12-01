@@ -103,19 +103,15 @@ def plotgraph(text):
             if G.edges[(e[0],e[1],0)]['assignvector'][k] == 1:
                 pre_edge_trace_x[k] += [x0,x1,None]
                 pre_edge_trace_y[k] += [y0,y1,None]
-    end = timer()            
-    timevectortestplot.append(end-start)
+
     
-    start = timer()
+
     for k in range(NumberOfContractors):
         edge_trace[k]['x'] = tuple(pre_edge_trace_x[k])
         edge_trace[k]['y'] = tuple(pre_edge_trace_y[k])
-    end = timer()            
+
     timevectortestplot.append(end-start)
     
-    
-    
-    start = timer()    
     node_trace = go.Scatter(
         x=[],
         y=[],
@@ -131,10 +127,7 @@ def plotgraph(text):
             size=10,
             color='#1f77b4'
         ))
-    end = timer()            
-    timevectortestplot.append(end-start)
-    
-    start = timer()
+              
     pre_node_trace_x =[]
     pre_node_trace_y =[] 
     pre_node_trace_text = []
@@ -145,21 +138,15 @@ def plotgraph(text):
         pre_node_trace_y += [y]  
         if text ==1:    
             pre_node_trace_text += [n]
-    end = timer()            
-    timevectortestplot.append(end-start)
     
     
-    start = timer()
     node_trace['x'] += tuple(pre_node_trace_x)
     node_trace['y'] += tuple(pre_node_trace_y)  
     if text == 1:
         node_trace['text'] += tuple(pre_node_trace_text)
 #    node_trace['text'] += tuple([n])
+ 
 
-    end = timer()            
-    timevectortestplot.append(end-start)
-    
-    start = timer()
     fig = go.Figure(data=edge_trace +(node_trace,),
                  layout=go.Layout(
                     title='<br>Network graph made with Python',
@@ -174,17 +161,8 @@ def plotgraph(text):
                         x=0.005, y=-0.002 ) ],
                     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                     yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)))
-    end = timer()            
-    timevectortestplot.append(end-start)
-    
-    start = timer()
     plot(fig, filename="networkx.html")
-    end = timer()            
-    timevectortestplot.append(end-start)
     
-
-
-
 #function to update all values based on contractor assignment
 def updatevalues():
 
@@ -244,11 +222,7 @@ def updatevalues():
         Niceness += G.nodes[n]['border']
     globals()['niceness'] = Niceness
     
-    
-    
-    
-
-        
+       
 #function running algorithm optimizing TPA (PPA and border are not taken into account)
 def TPAspreadfunc():
     try:
@@ -291,7 +265,8 @@ def TPAspreadfunc():
     except AttributeError:
         print('Encountered an attribute error')
     #
-    
+
+#function running algorithm optimizing PPA (TPA and border are not taken into account)
 def PPAspreadfunc():
     try:
         profitModel = Model('profitOpt')
@@ -333,7 +308,7 @@ def PPAspreadfunc():
     except AttributeError:
         print('Encountered an attribute error')
         
-
+#function optimizing TPA while bounding PPA
 def boundPPA_TPA_opt(PPAbound):
     try:
         time_profit_Model = Model('profit_time_Opt')
@@ -377,9 +352,7 @@ def boundPPA_TPA_opt(PPAbound):
 
 
 
-
-
-
+#function optimizng PPA while bounding TPA
 def boundTPA_PPA_opt(TPAbound):
     try:
         profit_time_Model = Model('profit_time_Opt')
@@ -421,17 +394,7 @@ def boundTPA_PPA_opt(TPAbound):
     except AttributeError:
         print('Encountered an attribute error')
 
-
-
-def frommatrix_to_assignment(x):
-    edgeCount = 0
-    for e in G.edges():
-        for k in range(NumberOfContractors):
-            G.edges[e]['assignvector'][k] = x[edgeCount][k]
-        edgeCount += 1
-   
-
-
+#function updating all swapvalues used in the P_MRAP optimization
 def update_swapvalues():
     
     #we change the order of the edgelist in this fucntion, we do not want to change the global variable edgelist
@@ -483,7 +446,8 @@ def update_swapvalues():
                                 assignedContractor = G.edges[edge_adjacent]['contractor']
                                 G.edges[edge_adjacent]['restrictedswapvalue'] = [infty]*NumberOfContractors
                                 G.edges[edge_adjacent]['restrictedswapvalue'][assignedContractor] = 0
-    
+
+#function updating all swapvalues of components used in the P_MRAP optimization
 def update_components():  
     global Component_vec
     Component_vec = []
@@ -585,24 +549,7 @@ def update_components():
                 c_adj.swapvalue_restricted = swapvalue2
             
                     
-                    
-def niceness_func():  
-    global niceness 
-    niceness = 0
-    for n in G.nodes():
-        bordernodes = list(G[n])
-        span = 0
-        for k in range(NumberOfContractors):
-            borders_k = 0
-            for n_adjacent in bordernodes:
-                edge = (n,n_adjacent)
-                if G.edges[edge]['assignvector'][k] == 1:
-                    borders_k += 1
-            if borders_k > 0:
-                span += 1
-        G.nodes[n]['border'] = span
-        niceness += span
-    
+#function running the GAP algorithm on components    
 def GAPalgorithm_comp(TPAbound,PPAbound,swapmethod):
     try:           
         global m_comp
@@ -705,10 +652,7 @@ def GAPalgorithm(TPAbound,PPAbound,swapmethod):
         print('Encountered an attribute error')
 
         
-        
-        
-        
-
+#GUROBI method improving niceness directly
 def optimize_border(TPAbound,PPAbound):
     try:
         global borderModel
@@ -800,7 +744,7 @@ def mycallback(model,where):
             objvaluevec.append(model.cbGet(GRB.Callback.MIP_OBJBST))
             boundvec.append(model.cbGet(GRB.Callback.MIP_OBJBND))
 
-        
+#assign all weights to edges dependent on the weightsetting      
 def createweights(weightsetting):
     #Create set attributes
     for e in edgelist:
@@ -908,8 +852,7 @@ def createweights(weightsetting):
             PPAmatrix[(e[0],e[1],multiplicity)] = G.edges[(e[0],e[1],multiplicity)]['PPAvector']
     
                 
-                
-                
+#function loading City street map as a graph from Open Street Map           
 def createcity(name,Polygon):    
     global NumberOfEdges
     global Contractor
@@ -976,13 +919,7 @@ def createcity(name,Polygon):
             total += G.edges[edge]['length']
     averagelength = total/NumberOfEdges
         
-            
-    
-        
-    
-
-        
-        
+```
         
             
         
