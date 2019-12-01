@@ -1,4 +1,3 @@
-# files
 # -*- coding: utf-8 -*-
 """
 Created on Wed Apr 17 17:16:47 2019
@@ -6,6 +5,7 @@ Created on Wed Apr 17 17:16:47 2019
 @author: bcc
 """
 
+```python
 import csv
 import sys
 import numpy as np
@@ -23,7 +23,7 @@ import copy
 import osmnx as ox
 import pandas as pd
 import matplotlib.pyplot as plt
-
+```
 
 ###########################################################################
 ##########################Create classes##################################
