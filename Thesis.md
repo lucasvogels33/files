@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Apr 17 17:16:47 2019
-
-@author: bcc
-"""
 
 ```python
+#import necessary libraries
+
 import csv
 import sys
 import numpy as np
