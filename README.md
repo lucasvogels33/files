@@ -25,6 +25,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 ```
 
+```python
 ###########################################################################
 ##########################Create classes##################################
 ##########################################################################
@@ -66,18 +67,17 @@ class Component:
       self.swapvalue_regular = swapvalue_regular
       self.swapvalue_restricted = swapvalue_restricted
       self.assigned = assigned
-    
-      
+```
+
+```python
 ##################################################################
 ############################define functions#####################
 #################################################################
-timevectortestplot = []
-timevectortestupdate = []
 #function to plot current graph
 def plotgraph(text):
     edge_trace= ()
     
-    start = timer()
+
     for k in range(NumberOfContractors):
         edge_trace = edge_trace +(go.Scatter(
             x=[],
@@ -87,10 +87,7 @@ def plotgraph(text):
             hoverinfo='none',
             mode='lines',
             ),)
-    end = timer()
-    timevectortestplot.append(end-start)
-    
-    start = timer()
+            
     pre_edge_trace_x = []
     pre_edge_trace_y = []
     for k in range(NumberOfContractors):
