@@ -601,6 +601,7 @@ def GAPalgorithm_comp(TPAbound,PPAbound,swapmethod):
     except AttributeError:
         print('Encountered an attribute error')
 
+#function running the GAP algorithm on the edges
 def GAPalgorithm(TPAbound,PPAbound,swapmethod):
     try:           
         global m
@@ -922,7 +923,7 @@ def createcity(name,Polygon):
 ```
         
             
-        
+```python        
 ################################################################
 ##############################set parameters####################
 ################################################################
@@ -941,8 +942,9 @@ gurobi_opt_code ={2:'optimal',3:'infeasible',9:'timelimit reached'}
 
 #GAPalgorithm parameters
 infty = 100000000
+````
 
-       
+```python       
 #########################################################################
 #############################run program#################################
 #########################################################################
@@ -1016,6 +1018,7 @@ for j in range(len(TPAratiovec)):
         optimalratio = [PPAratiovec[j],TPAratiovec[j]]
         optimal = [PPAvec[j],TPAvec[j]]
 
+#for three alpha's solve the instance in two ways: with the brute force algorithm and with the GAP algorithm
 for alpha in [0.4,0.2,0.1]:
     TPAbound = optimal[1]*(1+alpha)
     PPAbound = optimal[0]*(1-alpha)
@@ -1080,4 +1083,5 @@ for alpha in [0.4,0.2,0.1]:
     with open('GAPoutputv3.csv', 'a',newline='') as output:
         create_output = csv.writer(output, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         create_output.writerow([seedvalue, City, NumberOfContractors,weightsetting,alpha,G.number_of_edges(),niceness,len(Component_vec),nicenessvec,componentvec,nicenesstimevec,componenttimevec])
-                
+   
+```
